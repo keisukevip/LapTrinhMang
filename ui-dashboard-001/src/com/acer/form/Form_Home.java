@@ -6,6 +6,7 @@ import com.acer.model.CongViec;
 import com.acer.model.Model_Card;
 import com.acer.model.ServerListener;
 import com.acer.model.StatusType;
+import com.acer.socket.ClientSocket;
 import com.acer.swing.ScrollBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -25,8 +26,9 @@ public class Form_Home extends javax.swing.JPanel {
     }.getType();
 //    private ServerListener serverListener;
 
-    public Form_Home(String output, ServerListener serverListener) {
+    public Form_Home(String output, ServerListener serverListener, ClientSocket clientSocket) {
         initComponents();
+        table.addClientSocket(clientSocket);
         serverListener.addServerMessageListener(new ServerMessageListener() {
             @Override
             public void onMessageReceived(String message) {
@@ -34,7 +36,6 @@ public class Form_Home extends javax.swing.JPanel {
             }
 
         });
-        System.out.println("listentFOrmhome đã adđ"); 
        spTable.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
         spTable.getViewport().setBackground(Color.WHITE);
@@ -58,6 +59,7 @@ public class Form_Home extends javax.swing.JPanel {
                 table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
             }
         }
+        System.out.println("Form_home được cập nhật - "+message );
     }
 
     @SuppressWarnings("unchecked")

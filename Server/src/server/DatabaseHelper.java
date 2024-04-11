@@ -82,6 +82,13 @@ public class DatabaseHelper {
         statement.executeUpdate(query);
     }
 
+    public ResultSet selectRow(String tableName, String condition) throws SQLException {
+        String query = "SELECT * FROM " + tableName + " WHERE " + condition;
+        System.out.println(query);
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        return preparedStatement.executeQuery();
+    }
+
     // Phương thức đọc dữ liệu từ bảng
     public ResultSet selectData(String tableName) throws SQLException {
         String query = "SELECT * FROM " + tableName;

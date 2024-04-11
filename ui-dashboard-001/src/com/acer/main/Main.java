@@ -26,7 +26,7 @@ import javax.swing.SwingWorker;
 
 public class Main extends javax.swing.JFrame {
 
-    private String username;
+    public static String username;
     private ClientSocket clientSocket;
     private Gson gson = new Gson();
     private ServerListener serverListener;
@@ -61,7 +61,7 @@ public class Main extends javax.swing.JFrame {
         congViecList = gson.fromJson(output, listType);
         panelLogin.setVisible(false);
         remove(panelLogin);
-        TestPanel testPanel = new TestPanel(Main.this, output, serverListener);
+        TestPanel testPanel = new TestPanel(Main.this, output, serverListener,clientSocket);
         setLayout(new BorderLayout());
         add(testPanel, BorderLayout.CENTER);
     }

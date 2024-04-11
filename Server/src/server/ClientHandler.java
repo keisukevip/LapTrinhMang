@@ -13,6 +13,9 @@ import java.sql.SQLException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,19 +28,60 @@ public class ClientHandler implements Runnable {
     private Boolean check = false;
     private ClientHandlerDisconnected callback;
     private ClientHandler clientHandler;
+    private DatabaseHelper databaseHelper;
 
-    public ClientHandler(Socket clientSocket, ClientHandlerDisconnected callback) throws IOException {
+    public ClientHandler(Socket clientSocket, ClientHandlerDisconnected callback, DatabaseHelper databaseHelper) throws IOException {
+        this.databaseHelper = databaseHelper;
         this.callback = callback;
         this.clientSocket = clientSocket;
         input = new BufferedReader(new InputStreamReader(clientSocket.getInputStream(), StandardCharsets.UTF_8));
         output = new DataOutputStream(clientSocket.getOutputStream());
     }
 
+    public void updateDataApprove(String input) throws SQLException {
+        Gson gson = new Gson();
+        CongViec gsonData = gson.fromJson(input, CongViec.class);
+        databaseHelper.connect();
+        ResultSet selectRow = databaseHelper.selectRow("CongViec", "id = " + gsonData.getId());
+        selectRow.next();
+        int id = selectRow.getInt("id"); // Giả sử cột đầu tiên là cột ID
+        String tenCongViec = selectRow.getString("tenCongViec"); // Giả sử cột thứ hai là cột Tên công việc
+        String nguoiLam = selectRow.getString("nguoiThucHien");
+        String trangThai = selectRow.getString("trangThai");
+        System.out.println(trangThai);
+        if (trangThai.equals("APPROVED")) {
+            return;
+        }
+        databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai"}, new Object[]{gsonData.getNguoiThucHien(), gsonData.getTrangThai()}, "id = " + gsonData.getId());
+        ResultSet resultSet = databaseHelper.selectData("CongViec");
+        List<CongViec> congViecList = CongViec.resultSetToList(resultSet);
+        String gsonData2 = gson.toJson(congViecList);
+        ExecutorService executorService = Executors.newFixedThreadPool(Server.clientHandlers.size());
+        for (ClientHandler clientHandler : Server.clientHandlers) {
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        clientHandler.sendData("1|" + gsonData2 + "\n");
+                    } catch (IOException ex) {
+                        Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+
+            });
+        }
+
+    }
+
+    public void sendData(String message) throws IOException {
+        output.writeBytes(message);
+    }
+
     public void actionGetData() throws IOException, SQLException {
-        DatabaseHelper databaseHelper = new DatabaseHelper();
+        ResultSet resultSet = null;
         try {
             databaseHelper.connect();
-            ResultSet resultSet = databaseHelper.selectData("congviec");
+            resultSet = databaseHelper.selectData("congviec");
             List<CongViec> congViecList = CongViec.resultSetToList(resultSet);
             Gson gson = new Gson();
             String gsonData = gson.toJson(congViecList);
@@ -45,11 +89,13 @@ public class ClientHandler implements Runnable {
         } catch (SQLException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            if (databaseHelper.getConnection() != null) { // Kiểm tra xem kết nối có tồn tại không trước khi đóng
-                databaseHelper.disconnect(); // Đóng kết nối nếu tồn tại
+            if (resultSet != null) {
+                resultSet.close(); // Đóng ResultSet sau khi sử dụng
+            }
+            if (databaseHelper.getConnection() != null) {
+                databaseHelper.disconnect(); // Đảm bảo đóng kết nối sau khi sử dụng
             }
         }
-
     }
 
     public void checkLogin(String[] login) throws IOException {
@@ -77,14 +123,19 @@ public class ClientHandler implements Runnable {
             while (true) {
                 String s = input.readLine();
                 System.out.println(s);
-                String[] login = s.split("\\|");
-                if (login[0].equals("0")) {
-                    checkLogin(login);
+                String[] input = s.split("\\|");
+                if (input[0].equals("0")) {
+                    checkLogin(input);
+                } else if (input[0].equals("1")) {
+                    System.out.println(input[1]);
+                    updateDataApprove(input[1]);
                 }
             }
         } catch (IOException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             callback.onClientDisconnected(this);
+        } catch (SQLException ex) {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

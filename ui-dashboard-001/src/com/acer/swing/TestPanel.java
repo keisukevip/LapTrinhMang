@@ -8,6 +8,7 @@ import com.acer.form.Form_3;
 import com.acer.form.Form_Home;
 import com.acer.main.Main;
 import com.acer.model.ServerListener;
+import com.acer.socket.ClientSocket;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -22,9 +23,9 @@ public class TestPanel extends javax.swing.JPanel {
     private Form_2 form2;
     private Form_3 form3;
 //    private ServerMessageListener serverMessageListener;
-    public TestPanel(Main main, String output, ServerListener serverListener) {
+    public TestPanel(Main main, String output, ServerListener serverListener, ClientSocket clientSocket) {
         initComponents();
-        home = new Form_Home(output,serverListener);
+        home = new Form_Home(output,serverListener,clientSocket);
         form1 = new Form_1();
         form2 = new Form_2();
         form3 = new Form_3();
@@ -56,7 +57,7 @@ public class TestPanel extends javax.swing.JPanel {
             }
         });
         //  set when system open start with home form
-        setForm(new Form_Home(output,serverListener));
+        setForm(new Form_Home(output,serverListener,clientSocket));
     }
 
     private void setForm(JComponent com) {

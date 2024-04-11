@@ -1,10 +1,17 @@
 package com.acer.swing;
 
+import com.acer.main.Main;
+import com.acer.model.CongViec;
 import com.acer.model.StatusType;
+import com.acer.socket.ClientSocket;
+import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -12,7 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Table extends JTable {
-
+    private ClientSocket clientSocket;
     public Table() {
         setShowHorizontalLines(true);
         setGridColor(new Color(230, 230, 230));
@@ -38,6 +45,16 @@ public class Table extends JTable {
                             JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                     if (result == JOptionPane.YES_OPTION) {
+                        Gson gson = new Gson();
+                        CongViec congViec = new CongViec(Integer.parseInt(id.toString()),tenCongViec.toString(),Main.username,"APPROVED");
+                        String gsonData = gson.toJson(congViec);
+                        try {
+                            clientSocket.sendData("1|"+gsonData+"\n");
+                            System.out.println("đã gửi");
+                            System.out.println(gsonData);
+                        } catch (IOException ex) {
+                            Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                         System.out.println(result + " Đã cập nhật thành công");
 
                     } else if (result == JOptionPane.NO_OPTION) {
@@ -85,6 +102,10 @@ public class Table extends JTable {
                 }
             }
         });
+    }
+    
+    public void addClientSocket(ClientSocket clientSocket){
+        this.clientSocket = clientSocket;
     }
 
     public void addRow(Object[] row) {

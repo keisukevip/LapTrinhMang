@@ -20,10 +20,28 @@ public class CongViec {
         this.trangThai = trangThai;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public String getTenCongViec() {
+        return tenCongViec;
+    }
+
+    public String getNguoiThucHien() {
+        return nguoiThucHien;
+    }
+
+    public String getTrangThai() {
+        return trangThai;
+    }
+    
+
     // Getters and setters (not shown for brevity)
     // Phương thức chuyển đổi ResultSet thành danh sách các đối tượng CongViec
     public static List<CongViec> resultSetToList(ResultSet resultSet) throws SQLException {
-        List<CongViec> congViecList = new ArrayList<>();
+    List<CongViec> congViecList = new ArrayList<>();
+    try {
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
             String tenCongViec = resultSet.getString("tenCongViec");
@@ -32,6 +50,12 @@ public class CongViec {
             CongViec congViec = new CongViec(id, tenCongViec, nguoiThucHien, trangThai);
             congViecList.add(congViec);
         }
-        return congViecList;
+    } finally {
+        if (resultSet != null) {
+            resultSet.close(); // Đảm bảo ResultSet được đóng sau khi sử dụng
+        }
     }
+    return congViecList;
+}
+
 }

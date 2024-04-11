@@ -21,16 +21,18 @@ public class TaiKhoan {
     public boolean kiemTraDangNhap() throws SQLException {
         DatabaseHelper databaseHelper = new DatabaseHelper();
         boolean loginSuccess = false;
+        ResultSet resultSet = null;
         try {
             databaseHelper.connect();
             String query = "SELECT * FROM TaiKhoan WHERE tenDangNhap = ? AND matKhau = ?";
             PreparedStatement preparedStatement = databaseHelper.getConnection().prepareStatement(query);
             preparedStatement.setString(1, tenDangNhap);
             preparedStatement.setString(2, matKhau);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            resultSet = preparedStatement.executeQuery();
             loginSuccess = resultSet.next(); // Kiểm tra có kết quả từ CSDL không
         } finally {
             if (databaseHelper.getConnection() != null) { // Kiểm tra xem kết nối có tồn tại không trước khi đóng
+                resultSet.close();
                 databaseHelper.disconnect(); // Đóng kết nối nếu tồn tại
             }
         }
