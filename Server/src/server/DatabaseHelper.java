@@ -29,57 +29,84 @@ public class DatabaseHelper {
 
     // Phương thức thêm dữ liệu vào bảng
     public void insertData(String tableName, String[] columns, Object[] values) throws SQLException {
-        StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
-        queryBuilder.append(tableName).append(" (");
+        String lockQuery = "LOCK TABLES " + tableName + " WRITE";
+        String unlockQuery = "UNLOCK TABLES";
+        try {
 
-        for (int i = 0; i < columns.length; i++) {
-            queryBuilder.append(columns[i]);
-            if (i < columns.length - 1) {
-                queryBuilder.append(", ");
+            connection.createStatement().executeUpdate(lockQuery);
+
+            StringBuilder queryBuilder = new StringBuilder("INSERT INTO ");
+            queryBuilder.append(tableName).append(" (");
+
+            for (int i = 0; i < columns.length; i++) {
+                queryBuilder.append(columns[i]);
+                if (i < columns.length - 1) {
+                    queryBuilder.append(", ");
+                }
             }
-        }
-        queryBuilder.append(") VALUES (");
+            queryBuilder.append(") VALUES (");
 
-        for (int i = 0; i < values.length; i++) {
-            queryBuilder.append("?");
-            if (i < values.length - 1) {
-                queryBuilder.append(", ");
+            for (int i = 0; i < values.length; i++) {
+                queryBuilder.append("?");
+                if (i < values.length - 1) {
+                    queryBuilder.append(", ");
+                }
             }
-        }
-        queryBuilder.append(")");
+            queryBuilder.append(")");
 
-        PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
-        for (int i = 0; i < values.length; i++) {
-            preparedStatement.setObject(i + 1, values[i]);
+            PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
+            for (int i = 0; i < values.length; i++) {
+                preparedStatement.setObject(i + 1, values[i]);
+            }
+            preparedStatement.executeUpdate();
+        } finally {
+            connection.createStatement().executeUpdate(unlockQuery);
         }
-        preparedStatement.executeUpdate();
     }
 
     // Phương thức cập nhật dữ liệu trong bảng
     public void updateData(String tableName, String[] columns, Object[] values, String condition) throws SQLException {
-        StringBuilder queryBuilder = new StringBuilder("UPDATE ");
-        queryBuilder.append(tableName).append(" SET ");
+        String lockQuery = "LOCK TABLES " + tableName + " WRITE";
+        String unlockQuery = "UNLOCK TABLES";
+        try {
 
-        for (int i = 0; i < columns.length; i++) {
-            queryBuilder.append(columns[i]).append(" = ?");
-            if (i < columns.length - 1) {
-                queryBuilder.append(", ");
+            connection.createStatement().executeUpdate(lockQuery);
+
+            StringBuilder queryBuilder = new StringBuilder("UPDATE ");
+            queryBuilder.append(tableName).append(" SET ");
+
+            for (int i = 0; i < columns.length; i++) {
+                queryBuilder.append(columns[i]).append(" = ?");
+                if (i < columns.length - 1) {
+                    queryBuilder.append(", ");
+                }
             }
-        }
-        queryBuilder.append(" WHERE ").append(condition);
+            queryBuilder.append(" WHERE ").append(condition);
 
-        PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
-        for (int i = 0; i < values.length; i++) {
-            preparedStatement.setObject(i + 1, values[i]);
+            PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString());
+            for (int i = 0; i < values.length; i++) {
+                preparedStatement.setObject(i + 1, values[i]);
+            }
+            preparedStatement.executeUpdate();
+        } finally {
+            connection.createStatement().executeUpdate(unlockQuery);
         }
-        preparedStatement.executeUpdate();
     }
 
     // Phương thức xóa dữ liệu từ bảng
     public void deleteData(String tableName, String condition) throws SQLException {
-        String query = "DELETE FROM " + tableName + " WHERE " + condition;
-        Statement statement = connection.createStatement();
-        statement.executeUpdate(query);
+        String lockQuery = "LOCK TABLES " + tableName + " WRITE";
+        String unlockQuery = "UNLOCK TABLES";
+        try {
+
+            connection.createStatement().executeUpdate(lockQuery);
+
+            String query = "DELETE FROM " + tableName + " WHERE " + condition;
+            Statement statement = connection.createStatement();
+            statement.executeUpdate(query);
+        } finally {
+            connection.createStatement().executeUpdate(unlockQuery);
+        }
     }
 
     public ResultSet selectRow(String tableName, String condition) throws SQLException {

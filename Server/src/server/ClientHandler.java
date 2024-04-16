@@ -49,10 +49,17 @@ public class ClientHandler implements Runnable {
         String nguoiLam = selectRow.getString("nguoiThucHien");
         String trangThai = selectRow.getString("trangThai");
         System.out.println(trangThai);
-        if (trangThai.equals("APPROVED")) {
+        if (trangThai.equals("APPROVED") && !nguoiLam.equals(gsonData.getNguoiThucHien())) {
+            System.out.println(nguoiLam + "====" + gsonData.getNguoiThucHien());
+            System.out.println("APPROVED trong updateDataApprove");
             return;
         }
-        databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai"}, new Object[]{gsonData.getNguoiThucHien(), gsonData.getTrangThai()}, "id = " + gsonData.getId());
+        if (gsonData.getTrangThai().equals("REJECT")) {
+            databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai"}, new Object[]{"", gsonData.getTrangThai()}, "id = " + gsonData.getId());
+        } else {
+            databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai"}, new Object[]{gsonData.getNguoiThucHien(), gsonData.getTrangThai()}, "id = " + gsonData.getId());
+
+        }
         ResultSet resultSet = databaseHelper.selectData("CongViec");
         List<CongViec> congViecList = CongViec.resultSetToList(resultSet);
         String gsonData2 = gson.toJson(congViecList);

@@ -17,9 +17,10 @@ public class Server {
     public static void main(String[] args) throws IOException {
         ServerSocket welcomeSocket = new ServerSocket(8080);
         System.out.println("Server is running ...");
-        DatabaseHelper databaseHelper = new DatabaseHelper();
+        
 
         while (true) {
+            DatabaseHelper databaseHelper = new DatabaseHelper();
             Socket clientSock = welcomeSocket.accept();
             ClientHandler clientHandler = new ClientHandler(clientSock, new ClientHandlerDisconnected() {
                 @Override

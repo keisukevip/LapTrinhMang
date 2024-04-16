@@ -101,6 +101,10 @@ public class Message extends javax.swing.JPanel {
     public void eventOk(ActionListener event){
         cmdOkay.addActionListener(event);
     }
+    
+    public String status(){
+        return jList2.getSelectedValue();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.acer.swing.Button cmdCancel;

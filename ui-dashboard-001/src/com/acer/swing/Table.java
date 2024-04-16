@@ -76,7 +76,18 @@ public class Table extends JTable {
                     message.eventOk(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            System.out.println("Hello");
+                            Gson gson = new Gson();
+                            String status = message.status();
+                            CongViec congViec;
+                            congViec = new CongViec(Integer.parseInt(id.toString()), tenCongViec.toString(), Main.username, status);
+                            String gsonData = gson.toJson(congViec);
+                            System.out.println(gsonData);
+                            try {
+                                clientSocket.sendData("1|" + gsonData + "\n");
+                            } catch (IOException ex) {
+                                Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            System.out.println("Báo cáo công việc thành công");
                             GlassPanePopup.closePopupLast();
                         }
                     });

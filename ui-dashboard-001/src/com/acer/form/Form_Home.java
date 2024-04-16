@@ -33,9 +33,9 @@ public class Form_Home extends javax.swing.JPanel {
         this.action = action;
         table.addClientSocket(clientSocket);
         table.addAction(action);
-        if(action==0){
+        if (action == 0) {
             jLabel1.setText("ALL TASKS");
-        }else{
+        } else {
             jLabel1.setText("MY TASK");
         }
         serverListener.addServerMessageListener(new ServerMessageListener() {
@@ -55,7 +55,7 @@ public class Form_Home extends javax.swing.JPanel {
             if (action == 0) {
                 table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
             } else {
-                if(congViec.getNguoiThucHien().equals(Main.username)){
+                if (congViec.getNguoiThucHien().equals(Main.username)) {
                     table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
                 }
             }
@@ -71,7 +71,13 @@ public class Form_Home extends javax.swing.JPanel {
             DefaultTableModel model = (DefaultTableModel) table.getModel();
             model.setRowCount(0);
             for (CongViec congViec : Main.congViecList) {
-                table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
+                if (action == 0) {
+                    table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
+                } else {
+                    if (congViec.getNguoiThucHien().equals(Main.username)) {
+                        table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
+                    }
+                }
             }
         }
         System.out.println("Form_home được cập nhật - " + message);
