@@ -19,14 +19,14 @@ import javax.swing.SwingUtilities;
 public class TestPanel extends javax.swing.JPanel {
 
     private Form_Home home;
-    private Form_1 form1;
+    private Form_Home task;
     private Form_2 form2;
     private Form_3 form3;
 //    private ServerMessageListener serverMessageListener;
     public TestPanel(Main main, String output, ServerListener serverListener, ClientSocket clientSocket) {
         initComponents();
-        home = new Form_Home(output,serverListener,clientSocket);
-        form1 = new Form_1();
+        home = new Form_Home(output,serverListener,clientSocket,0);
+        task = new Form_Home(output,serverListener,clientSocket,1);
         form2 = new Form_2();
         form3 = new Form_3();
         menu2.initMoving(main);
@@ -38,7 +38,7 @@ public class TestPanel extends javax.swing.JPanel {
                         setForm(home);
                         break;
                     case 1:
-                        setForm(form1);
+                        setForm(task);
                         break;
                     case 2:
                         setForm(form2);
@@ -57,7 +57,7 @@ public class TestPanel extends javax.swing.JPanel {
             }
         });
         //  set when system open start with home form
-        setForm(new Form_Home(output,serverListener,clientSocket));
+        setForm(new Form_Home(output,serverListener,clientSocket,0));
     }
 
     private void setForm(JComponent com) {

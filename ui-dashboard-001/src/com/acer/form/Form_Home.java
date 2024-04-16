@@ -22,13 +22,22 @@ import javax.swing.table.DefaultTableModel;
 
 public class Form_Home extends javax.swing.JPanel {
 
+    private int action;
+
     private java.lang.reflect.Type listType = new TypeToken<List<CongViec>>() {
     }.getType();
 //    private ServerListener serverListener;
 
-    public Form_Home(String output, ServerListener serverListener, ClientSocket clientSocket) {
+    public Form_Home(String output, ServerListener serverListener, ClientSocket clientSocket, int action) {
         initComponents();
+        this.action = action;
         table.addClientSocket(clientSocket);
+        table.addAction(action);
+        if(action==0){
+            jLabel1.setText("ALL TASKS");
+        }else{
+            jLabel1.setText("MY TASK");
+        }
         serverListener.addServerMessageListener(new ServerMessageListener() {
             @Override
             public void onMessageReceived(String message) {
@@ -36,14 +45,20 @@ public class Form_Home extends javax.swing.JPanel {
             }
 
         });
-       spTable.setVerticalScrollBar(new ScrollBar());
+        spTable.setVerticalScrollBar(new ScrollBar());
         spTable.getVerticalScrollBar().setBackground(Color.WHITE);
         spTable.getViewport().setBackground(Color.WHITE);
         JPanel p = new JPanel();
         p.setBackground(Color.WHITE);
         spTable.setCorner(JScrollPane.UPPER_RIGHT_CORNER, p);
         for (CongViec congViec : Main.congViecList) {
-            table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
+            if (action == 0) {
+                table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
+            } else {
+                if(congViec.getNguoiThucHien().equals(Main.username)){
+                    table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
+                }
+            }
         }
     }
 
@@ -59,7 +74,7 @@ public class Form_Home extends javax.swing.JPanel {
                 table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
             }
         }
-        System.out.println("Form_home được cập nhật - "+message );
+        System.out.println("Form_home được cập nhật - " + message);
     }
 
     @SuppressWarnings("unchecked")
@@ -105,10 +120,11 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
+                        .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

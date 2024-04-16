@@ -21,8 +21,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import com.acer.glasspanepopup.GlassPanePopup;
 
 public class Main extends javax.swing.JFrame {
 
@@ -36,6 +38,8 @@ public class Main extends javax.swing.JFrame {
     public static List<CongViec> congViecList;
 
     public Main() throws IOException {
+        setResizable(false);
+        GlassPanePopup.install(this);
         clientSocket = new ClientSocket();
         serverListener = new ServerListener(clientSocket.getInput());
         serverListener.start();

@@ -1,5 +1,6 @@
 package com.acer.swing;
 
+import com.acer.glasspanepopup.GlassPanePopup;
 import com.acer.main.Main;
 import com.acer.model.CongViec;
 import com.acer.model.StatusType;
@@ -7,6 +8,8 @@ import com.acer.socket.ClientSocket;
 import com.google.gson.Gson;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -19,7 +22,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 public class Table extends JTable {
+
+    private int action;
     private ClientSocket clientSocket;
+
     public Table() {
         setShowHorizontalLines(true);
         setGridColor(new Color(230, 230, 230));
@@ -38,32 +44,44 @@ public class Table extends JTable {
                 Object tenCongViec = model.getValueAt(row, 1); // Giả sử cột thứ hai là cột Tên công việc
                 Object nguoiLam = model.getValueAt(row, 2);
                 Object trangThai = model.getValueAt(row, 3);
-                System.out.println(id + " " +tenCongViec+" "+nguoiLam+" "+trangThai);
-                if (trangThai == StatusType.REJECT) {
-                    Object[] options = {"Yes", "No"};
-                    int result = JOptionPane.showOptionDialog(null, "Bạn có muốn tiếp tục không?", "Confirmation",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+                System.out.println(id + " " + tenCongViec + " " + nguoiLam + " " + trangThai);
+                if (action == 0) {
+                    if (trangThai == StatusType.REJECT) {
+                        Object[] options = {"Yes", "No"};
+                        int result = JOptionPane.showOptionDialog(null, "Bạn có muốn tiếp tục không?", "Confirmation",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
-                    if (result == JOptionPane.YES_OPTION) {
-                        Gson gson = new Gson();
-                        CongViec congViec = new CongViec(Integer.parseInt(id.toString()),tenCongViec.toString(),Main.username,"APPROVED");
-                        String gsonData = gson.toJson(congViec);
-                        try {
-                            clientSocket.sendData("1|"+gsonData+"\n");
-                            System.out.println("đã gửi");
-                            System.out.println(gsonData);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+                        if (result == JOptionPane.YES_OPTION) {
+                            Gson gson = new Gson();
+                            CongViec congViec = new CongViec(Integer.parseInt(id.toString()), tenCongViec.toString(), Main.username, "APPROVED");
+                            String gsonData = gson.toJson(congViec);
+                            try {
+                                clientSocket.sendData("1|" + gsonData + "\n");
+                                System.out.println("đã gửi");
+                                System.out.println(gsonData);
+                            } catch (IOException ex) {
+                                Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                            System.out.println(result + " Đã cập nhật thành công");
+
+                        } else if (result == JOptionPane.NO_OPTION) {
+                            System.out.println(result + " Đã hủy");
+                        } else {
+                            System.out.println(result);
                         }
-                        System.out.println(result + " Đã cập nhật thành công");
-
-                    } else if (result == JOptionPane.NO_OPTION) {
-                        System.out.println(result + " Đã hủy");
-                    } else {
-                        System.out.println(result);
                     }
+                } else {
+                    System.out.println("task form");
+                    Message message = new Message();
+                    message.eventOk(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Hello");
+                            GlassPanePopup.closePopupLast();
+                        }
+                    });
+                    GlassPanePopup.showPopup(message);
                 }
-
             }
         });
         getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
@@ -103,9 +121,13 @@ public class Table extends JTable {
             }
         });
     }
-    
-    public void addClientSocket(ClientSocket clientSocket){
+
+    public void addClientSocket(ClientSocket clientSocket) {
         this.clientSocket = clientSocket;
+    }
+
+    public void addAction(int action) {
+        this.action = action;
     }
 
     public void addRow(Object[] row) {
