@@ -48,17 +48,22 @@ public class ClientHandler implements Runnable {
         String tenCongViec = selectRow.getString("tenCongViec"); // Giả sử cột thứ hai là cột Tên công việc
         String nguoiLam = selectRow.getString("nguoiThucHien");
         String trangThai = selectRow.getString("trangThai");
-        System.out.println(trangThai);
+        String version = selectRow.getString("version");
+        System.out.println("==================");
+        System.out.println(tenCongViec + " " + nguoiLam + " " + trangThai);
+        System.out.println(input);
+        System.out.println("==================");
         if (trangThai.equals("APPROVED") && !nguoiLam.equals(gsonData.getNguoiThucHien())) {
             System.out.println(nguoiLam + "====" + gsonData.getNguoiThucHien());
             System.out.println("APPROVED trong updateDataApprove");
             return;
         }
         if (gsonData.getTrangThai().equals("REJECT")) {
-            databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai"}, new Object[]{"", gsonData.getTrangThai()}, "id = " + gsonData.getId());
+            // Cập nhật dữ liệu và tăng phiên bản lên 1
+            databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai", "version"}, new Object[]{"", gsonData.getTrangThai(), Integer.parseInt(version) + 1}, "id = " + gsonData.getId() + " and version = " + version);
         } else {
-            databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai"}, new Object[]{gsonData.getNguoiThucHien(), gsonData.getTrangThai()}, "id = " + gsonData.getId());
-
+            // Cập nhật dữ liệu và tăng phiên bản lên 1
+            databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai", "version"}, new Object[]{gsonData.getNguoiThucHien(), gsonData.getTrangThai(), Integer.parseInt(version) + 1}, "id = " + gsonData.getId() + " and version = " + version);
         }
         ResultSet resultSet = databaseHelper.selectData("CongViec");
         List<CongViec> congViecList = CongViec.resultSetToList(resultSet);

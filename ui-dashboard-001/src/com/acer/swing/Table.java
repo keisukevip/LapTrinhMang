@@ -16,7 +16,9 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -34,6 +36,9 @@ public class Table extends JTable {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                if (e.getButton() != MouseEvent.BUTTON1) {
+                    return;
+                }
                 int row = rowAtPoint(e.getPoint());
 
                 // Lấy mô hình dữ liệu của bảng
@@ -94,6 +99,41 @@ public class Table extends JTable {
                     GlassPanePopup.showPopup(message);
                 }
             }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                System.out.println("Sự kiện kiểm tra chuột phải");
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    System.out.println("Chuột phải được ấn");
+                    int row = rowAtPoint(e.getPoint());
+                    DefaultTableModel model = (DefaultTableModel) getModel();
+                    Object id = model.getValueAt(row, 0); // Giả sử cột đầu tiên là cột ID
+                    Object tenCongViec = model.getValueAt(row, 1); // Giả sử cột thứ hai là cột Tên công việc
+                    Object nguoiLam = model.getValueAt(row, 2);
+                    Object trangThai = model.getValueAt(row, 3);
+                    if (Main.username.equals("admin")) {
+                        JPopupMenu popupMenu = new JPopupMenu();
+
+                        // Tạo các menu item trong popup menu
+                        JMenuItem deleteMenuItem = new JMenuItem("Delete");
+
+                        // Xử lý sự kiện khi người dùng chọn Delete
+                        deleteMenuItem.addActionListener(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                System.out.println("Xóa dòng công việc có id là " + id.toString());
+                            }
+                        });
+
+                        // Thêm các menu item vào popup menu
+                        popupMenu.add(deleteMenuItem);
+
+                        // Hiển thị popup menu tại vị trí chuột
+                        popupMenu.show(e.getComponent(), e.getX(), e.getY());
+                    }
+                }
+            }
+
         });
         getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
