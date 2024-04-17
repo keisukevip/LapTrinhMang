@@ -44,7 +44,7 @@ public class Main extends javax.swing.JFrame {
         serverListener = new ServerListener(clientSocket.getInput());
         serverListener.start();
         initComponents();
-//        setBackground(new Color(0, 0, 0, 0));
+        setBackground(new Color(0, 0, 0, 0));
         serverListener.addServerMessageListener(new ServerMessageListener() {
             @Override
             public void onMessageReceived(String message) {
@@ -65,7 +65,7 @@ public class Main extends javax.swing.JFrame {
         congViecList = gson.fromJson(output, listType);
         panelLogin.setVisible(false);
         remove(panelLogin);
-        TestPanel testPanel = new TestPanel(Main.this, output, serverListener,clientSocket);
+        TestPanel testPanel = new TestPanel(Main.this, output, serverListener, clientSocket);
         setLayout(new BorderLayout());
         add(testPanel, BorderLayout.CENTER);
     }
@@ -80,8 +80,10 @@ public class Main extends javax.swing.JFrame {
         cmdSignIn = new com.acer.swing.Button();
         txtUser = new com.acer.swing.TextField();
         txtPass = new com.acer.swing.PasswordField();
+        button2 = new com.acer.swing.Button();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         panelLogin.setBackground(new java.awt.Color(255, 255, 255));
         panelLogin.setOpaque(true);
@@ -114,8 +116,8 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmdSignIn, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                    .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmdSignIn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(txtUser, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
                     .addComponent(txtPass, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -132,6 +134,14 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        button2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/acer/icon/10.png"))); // NOI18N
+        button2.setToolTipText("");
+        button2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                button2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout panelLoginLayout = new javax.swing.GroupLayout(panelLogin);
         panelLogin.setLayout(panelLoginLayout);
         panelLoginLayout.setHorizontalGroup(
@@ -140,13 +150,19 @@ public class Main extends javax.swing.JFrame {
                 .addGap(410, 410, 410)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(413, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelLoginLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31))
         );
         panelLoginLayout.setVerticalGroup(
             panelLoginLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelLoginLayout.createSequentialGroup()
                 .addGap(119, 119, 119)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(154, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 107, Short.MAX_VALUE)
+                .addComponent(button2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(17, 17, 17))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -195,6 +211,11 @@ public class Main extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_cmdSignInActionPerformed
 
+    private void button2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button2ActionPerformed
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        System.exit(0);
+    }//GEN-LAST:event_button2ActionPerformed
+
     public void check(String message) throws InterruptedException, IOException {
         String[] output = message.split("\\|");
         if (output[0].equals("0")) {
@@ -238,6 +259,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private com.acer.swing.Button button2;
     private com.acer.swing.Button cmdSignIn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

@@ -36,6 +36,7 @@ public class TestPanel extends javax.swing.JPanel {
 
     public TestPanel(Main main, String output, ServerListener serverListener, ClientSocket clientSocket) {
         initComponents();
+        setOpaque(false);
         home = new Form_Home(output, serverListener, clientSocket, 0);
         task = new Form_Home(output, serverListener, clientSocket, 1);
         form2 = new Form_2();
@@ -52,7 +53,7 @@ public class TestPanel extends javax.swing.JPanel {
                         setForm(task);
                         break;
                     case 2:
-                        if(!Main.username.equals("admin")){
+                        if (!Main.username.equals("admin")) {
                             JOptionPane.showMessageDialog(null, "Chỉ có admin mới dùng được chức năng này", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
                             return;
                         }
@@ -67,7 +68,7 @@ public class TestPanel extends javax.swing.JPanel {
                                     return;
                                 }
                                 Gson gson = new Gson();
-                                CongViec congViec = new CongViec(-1, text, "", "REJECT");
+                                CongViec congViec = new CongViec(-1, text, "", "PENDING");
                                 String gsonData = gson.toJson(congViec);
                                 System.out.println(gsonData);
                                 try {
@@ -84,9 +85,11 @@ public class TestPanel extends javax.swing.JPanel {
                     case 3:
                         setForm(form3);
                         break;
-                    case 10:
+                    case 12:
                         new Thread(() -> {
+                            System.out.println("THoát");
                             main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            System.exit(0);
                         }).start();
                         break;
                     default:
@@ -122,18 +125,19 @@ public class TestPanel extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(menu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(menu2, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE)
+                    .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 980, Short.MAX_VALUE)
                     .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu2, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, 641, Short.MAX_VALUE))
+            .addComponent(menu2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
 

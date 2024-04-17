@@ -30,6 +30,7 @@ public class Form_Home extends javax.swing.JPanel {
 
     public Form_Home(String output, ServerListener serverListener, ClientSocket clientSocket, int action) {
         initComponents();
+        setOpaque(false);
         this.action = action;
         table.addClientSocket(clientSocket);
         table.addAction(action);
@@ -55,7 +56,7 @@ public class Form_Home extends javax.swing.JPanel {
             if (action == 0) {
                 table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
             } else {
-                if (congViec.getNguoiThucHien().equals(Main.username)) {
+                if (congViec.getNguoiThucHien().equals(Main.username) && !congViec.getTrangThai().equals("REJECT")) {
                     table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
                 }
             }
@@ -74,7 +75,7 @@ public class Form_Home extends javax.swing.JPanel {
                 if (action == 0) {
                     table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
                 } else {
-                    if (congViec.getNguoiThucHien().equals(Main.username)) {
+                    if (congViec.getNguoiThucHien().equals(Main.username) && !congViec.getTrangThai().equals("REJECT")) {
                         table.addRow(new Object[]{congViec.getId(), congViec.getTenCongViec(), congViec.getNguoiThucHien(), StatusType.fromString(congViec.getTrangThai())});
                     }
                 }

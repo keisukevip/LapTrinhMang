@@ -73,12 +73,12 @@ public class ClientHandler implements Runnable {
         System.out.println(tenCongViec + " " + nguoiLam + " " + trangThai);
         System.out.println(input);
         System.out.println("==================");
-        if (trangThai.equals("APPROVED") && !nguoiLam.equals(gsonData.getNguoiThucHien())) {
+        if (trangThai.equals("PROCESSING") && !nguoiLam.equals(gsonData.getNguoiThucHien())) {
             System.out.println(nguoiLam + "====" + gsonData.getNguoiThucHien());
-            System.out.println("APPROVED trong updateDataApprove");
+            System.out.println("PROCESSING trong updateDataApprove");
             return;
         }
-        if (gsonData.getTrangThai().equals("REJECT")) {
+        if (gsonData.getTrangThai().equals("PENDING")) {
             // Cập nhật dữ liệu và tăng phiên bản lên 1
             databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai", "version"}, new Object[]{"", gsonData.getTrangThai(), Integer.parseInt(version) + 1}, "id = " + gsonData.getId() + " and version = " + version);
         } else {

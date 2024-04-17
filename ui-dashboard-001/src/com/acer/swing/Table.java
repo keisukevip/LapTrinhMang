@@ -51,14 +51,14 @@ public class Table extends JTable {
                 Object trangThai = model.getValueAt(row, 3);
                 System.out.println(id + " " + tenCongViec + " " + nguoiLam + " " + trangThai);
                 if (action == 0) {
-                    if (trangThai == StatusType.REJECT) {
+                    if (trangThai == StatusType.PENDING || trangThai == StatusType.REJECT) {
                         Object[] options = {"Yes", "No"};
                         int result = JOptionPane.showOptionDialog(null, "Bạn có muốn tiếp tục không?", "Confirmation",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (result == JOptionPane.YES_OPTION) {
                             Gson gson = new Gson();
-                            CongViec congViec = new CongViec(Integer.parseInt(id.toString()), tenCongViec.toString(), Main.username, "APPROVED");
+                            CongViec congViec = new CongViec(Integer.parseInt(id.toString()), tenCongViec.toString(), Main.username, "PROCESSING");
                             String gsonData = gson.toJson(congViec);
                             try {
                                 clientSocket.sendData("1|" + gsonData + "\n");
@@ -171,12 +171,6 @@ public class Table extends JTable {
                 } else {
                     StatusType type = (StatusType) o;
                     CellStatus cell = new CellStatus(type);
-//                    cell.addMouseListener(new MouseAdapter() {
-//                        @Override
-//                        public void mouseClicked(MouseEvent e) {
-//                            System.out.println(cell.getType());
-//                        }
-//                    });
                     return cell;
                 }
             }

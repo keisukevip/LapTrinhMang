@@ -43,9 +43,12 @@ public class TableStatus extends JLabel {
             GradientPaint g;
             if (type == StatusType.PENDING) {
                 g = new GradientPaint(0, 0, new Color(186, 123, 247), 0, getHeight(), new Color(167, 94, 236));
-            } else if (type == StatusType.APPROVED) {
+            } else if (type == StatusType.COMPLETED) {
                 g = new GradientPaint(0, 0, new Color(142, 142, 250), 0, getHeight(), new Color(123, 123, 245));
-            } else {
+            }else if(type == StatusType.PROCESSING){
+                g = new GradientPaint(0, 0, new Color(54, 209, 220), 0, getHeight(), new Color(91, 134, 229));
+            }
+            else {
                 g = new GradientPaint(0, 0, new Color(241, 208, 62), 0, getHeight(), new Color(211, 184, 61));
             }
             g2.setPaint(g);

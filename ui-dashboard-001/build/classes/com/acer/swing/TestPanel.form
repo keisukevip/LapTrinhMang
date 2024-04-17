@@ -22,9 +22,10 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <Component id="menu2" min="-2" max="-2" attributes="0"/>
+              <Component id="menu2" min="-2" pref="223" max="-2" attributes="0"/>
+              <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="header1" pref="988" max="32767" attributes="0"/>
+                  <Component id="header1" pref="980" max="32767" attributes="0"/>
                   <Component id="panelBorder1" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -32,12 +33,12 @@
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="menu2" pref="704" max="32767" attributes="0"/>
           <Group type="102" attributes="0">
               <Component id="header1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="panelBorder1" max="32767" attributes="0"/>
+              <Component id="panelBorder1" pref="641" max="32767" attributes="0"/>
           </Group>
+          <Component id="menu2" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>

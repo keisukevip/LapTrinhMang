@@ -54,7 +54,7 @@ public class Message extends javax.swing.JPanel {
 
         jList2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jList2.setModel(new javax.swing.AbstractListModel<String>() {
-            String[] strings = { "PENDING", "REJECT" };
+            String[] strings = { "COMPLETED", "REJECT" };
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
