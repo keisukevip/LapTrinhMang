@@ -5,13 +5,22 @@ import com.acer.event.ServerMessageListener;
 import com.acer.form.Form_1;
 import com.acer.form.Form_2;
 import com.acer.form.Form_3;
+import com.acer.form.Form_Add_Job;
 import com.acer.form.Form_Home;
+import com.acer.glasspanepopup.GlassPanePopup;
 import com.acer.main.Main;
+import com.acer.model.CongViec;
 import com.acer.model.ServerListener;
 import com.acer.socket.ClientSocket;
+import com.google.gson.Gson;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -23,10 +32,11 @@ public class TestPanel extends javax.swing.JPanel {
     private Form_2 form2;
     private Form_3 form3;
 //    private ServerMessageListener serverMessageListener;
+
     public TestPanel(Main main, String output, ServerListener serverListener, ClientSocket clientSocket) {
         initComponents();
-        home = new Form_Home(output,serverListener,clientSocket,0);
-        task = new Form_Home(output,serverListener,clientSocket,1);
+        home = new Form_Home(output, serverListener, clientSocket, 0);
+        task = new Form_Home(output, serverListener, clientSocket, 1);
         form2 = new Form_2();
         form3 = new Form_3();
         menu2.initMoving(main);
@@ -41,7 +51,30 @@ public class TestPanel extends javax.swing.JPanel {
                         setForm(task);
                         break;
                     case 2:
-                        setForm(form2);
+                        Form_Add_Job form_Add_Job = new Form_Add_Job();
+                        form_Add_Job.eventOk(new ActionListener() {
+                            @Override
+                            public void actionPerformed(ActionEvent e) {
+                                System.out.println("Gọi okay");
+                                String text = form_Add_Job.getText().trim();
+                                if (text.equals("")) {
+                                    GlassPanePopup.closePopupLast();
+                                    return;
+                                }
+                                Gson gson = new Gson();
+                                CongViec congViec = new CongViec(-1, text, "", "REJECT");
+                                String gsonData = gson.toJson(congViec);
+                                System.out.println(gsonData);
+                                try {
+                                    clientSocket.sendData("2|" + gsonData + "\n");
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                System.out.println("Thêm công việc thành công");
+                                GlassPanePopup.closePopupLast();
+                            }
+                        });
+                        GlassPanePopup.showPopup(form_Add_Job);
                         break;
                     case 3:
                         setForm(form3);
@@ -57,7 +90,7 @@ public class TestPanel extends javax.swing.JPanel {
             }
         });
         //  set when system open start with home form
-        setForm(new Form_Home(output,serverListener,clientSocket,0));
+        setForm(new Form_Home(output, serverListener, clientSocket, 0));
     }
 
     private void setForm(JComponent com) {

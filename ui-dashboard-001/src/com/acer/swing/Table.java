@@ -121,7 +121,17 @@ public class Table extends JTable {
                         deleteMenuItem.addActionListener(new ActionListener() {
                             @Override
                             public void actionPerformed(ActionEvent e) {
-                                System.out.println("Xóa dòng công việc có id là " + id.toString());
+                                // Lấy mô hình dữ liệu của bảng
+                                DefaultTableModel model = (DefaultTableModel) getModel();
+
+                                // Lấy dữ liệu từ các cột trong hàng được click
+                                Object id = model.getValueAt(row, 0);
+                                try {
+                                    clientSocket.sendData("3|" + (int) id + "\n");
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+                                System.out.println(id);
                             }
                         });
 

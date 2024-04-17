@@ -141,6 +141,10 @@ public class ClientHandler implements Runnable {
                 } else if (input[0].equals("1")) {
                     System.out.println(input[1]);
                     updateDataApprove(input[1]);
+                } else if (input[0].equals("2")) {
+                    System.out.println(input[1]);
+                } else {
+                    System.out.println(input[1]);
                 }
             }
         } catch (IOException ex) {
