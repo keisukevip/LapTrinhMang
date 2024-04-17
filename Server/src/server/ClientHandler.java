@@ -38,6 +38,26 @@ public class ClientHandler implements Runnable {
         output = new DataOutputStream(clientSocket.getOutputStream());
     }
 
+    public void addData(String input) throws SQLException {
+        Gson gson = new Gson();
+        CongViec gsonData = gson.fromJson(input, CongViec.class);
+        databaseHelper.connect();
+        String tenCongViec = gsonData.getTenCongViec();
+        String nguoiLam = gsonData.getNguoiThucHien();
+        String trangThai = gsonData.getTrangThai();
+        databaseHelper.insertData("CongViec", new String[]{"tenCongViec", "nguoiThucHien", "trangThai"}, new Object[]{tenCongViec, nguoiLam, trangThai});
+        System.out.println("Thêm công việc thành công");
+        databaseHelper.disconnect();
+        broadCast();
+    }
+
+    public void deletaData(String input) throws SQLException {
+        databaseHelper.connect();
+        databaseHelper.deleteData("CongViec", "id = " + input);
+        databaseHelper.disconnect();
+        broadCast();
+    }
+
     public void updateDataApprove(String input) throws SQLException {
         Gson gson = new Gson();
         CongViec gsonData = gson.fromJson(input, CongViec.class);
@@ -65,6 +85,14 @@ public class ClientHandler implements Runnable {
             // Cập nhật dữ liệu và tăng phiên bản lên 1
             databaseHelper.updateData("CongViec", new String[]{"nguoiThucHien", "trangThai", "version"}, new Object[]{gsonData.getNguoiThucHien(), gsonData.getTrangThai(), Integer.parseInt(version) + 1}, "id = " + gsonData.getId() + " and version = " + version);
         }
+        databaseHelper.disconnect();
+        broadCast();
+
+    }
+
+    public void broadCast() throws SQLException {
+        Gson gson = new Gson();
+        databaseHelper.connect();
         ResultSet resultSet = databaseHelper.selectData("CongViec");
         List<CongViec> congViecList = CongViec.resultSetToList(resultSet);
         String gsonData2 = gson.toJson(congViecList);
@@ -82,7 +110,7 @@ public class ClientHandler implements Runnable {
 
             });
         }
-
+        databaseHelper.disconnect();
     }
 
     public void sendData(String message) throws IOException {
@@ -139,12 +167,11 @@ public class ClientHandler implements Runnable {
                 if (input[0].equals("0")) {
                     checkLogin(input);
                 } else if (input[0].equals("1")) {
-                    System.out.println(input[1]);
                     updateDataApprove(input[1]);
                 } else if (input[0].equals("2")) {
-                    System.out.println(input[1]);
+                    addData(input[1]);
                 } else {
-                    System.out.println(input[1]);
+                    deletaData(input[1]);
                 }
             }
         } catch (IOException ex) {

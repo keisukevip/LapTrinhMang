@@ -125,12 +125,11 @@ public class Form_Home extends javax.swing.JPanel {
             .addGroup(panelBorder1Layout.createSequentialGroup()
                 .addGap(20, 20, 20)
                 .addGroup(panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBorder1Layout.createSequentialGroup()
-                        .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 849, Short.MAX_VALUE)
-                        .addContainerGap())
+                    .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 835, Short.MAX_VALUE)
                     .addGroup(panelBorder1Layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGap(20, 20, 20))
         );
         panelBorder1Layout.setVerticalGroup(
             panelBorder1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -138,8 +137,8 @@ public class Form_Home extends javax.swing.JPanel {
                 .addGap(20, 20, 20)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(spTable, javax.swing.GroupLayout.DEFAULT_SIZE, 493, Short.MAX_VALUE)
-                .addGap(20, 20, 20))
+                .addComponent(spTable, javax.swing.GroupLayout.PREFERRED_SIZE, 386, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -156,7 +155,7 @@ public class Form_Home extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(panelBorder1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addContainerGap(216, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 public class TestPanel extends javax.swing.JPanel {
@@ -51,6 +52,10 @@ public class TestPanel extends javax.swing.JPanel {
                         setForm(task);
                         break;
                     case 2:
+                        if(!Main.username.equals("admin")){
+                            JOptionPane.showMessageDialog(null, "Chỉ có admin mới dùng được chức năng này", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+                            return;
+                        }
                         Form_Add_Job form_Add_Job = new Form_Add_Job();
                         form_Add_Job.eventOk(new ActionListener() {
                             @Override
@@ -119,14 +124,12 @@ public class TestPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(menu2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 951, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, 0)
-                        .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addComponent(header1, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE)
+                    .addComponent(panelBorder1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(menu2, javax.swing.GroupLayout.DEFAULT_SIZE, 633, Short.MAX_VALUE)
+            .addComponent(menu2, javax.swing.GroupLayout.DEFAULT_SIZE, 704, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(header1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)

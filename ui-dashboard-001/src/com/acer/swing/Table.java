@@ -127,7 +127,7 @@ public class Table extends JTable {
                                 // Lấy dữ liệu từ các cột trong hàng được click
                                 Object id = model.getValueAt(row, 0);
                                 try {
-                                    clientSocket.sendData("3|" + (int) id + "\n");
+                                    clientSocket.sendData("3|" + id + "\n");
                                 } catch (IOException ex) {
                                     Logger.getLogger(Table.class.getName()).log(Level.SEVERE, null, ex);
                                 }
