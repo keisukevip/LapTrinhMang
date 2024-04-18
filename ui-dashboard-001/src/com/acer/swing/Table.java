@@ -53,7 +53,7 @@ public class Table extends JTable {
                 if (action == 0) {
                     if (trangThai == StatusType.PENDING || trangThai == StatusType.REJECT) {
                         Object[] options = {"Yes", "No"};
-                        int result = JOptionPane.showOptionDialog(null, "Bạn có muốn tiếp tục không?", "Confirmation",
+                        int result = JOptionPane.showOptionDialog(null, "Bạn có chọn công việc này không?", "Confirmation",
                                 JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
                         if (result == JOptionPane.YES_OPTION) {

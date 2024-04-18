@@ -3,17 +3,21 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/TestPanel.java</file>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/event/EventMenuSelected.java</file>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/Table.java</file>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/socket/ClientSocket.java</file>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/CellStatus.java</file>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/model/ServerListener.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/TableStatus.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/main/Main.java</file>
-            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/TestPanel.java</file>
-            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/Table.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/form/Form_Home.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/model/StatusType.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/Message.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/ListMenu.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/component/Menu.java</file>
             <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/component/Header.java</file>
-            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/swing/CellStatus.java</file>
+            <file>file:/C:/Users/ACER/Desktop/LapTrinhMang/ui-dashboard-001/src/com/acer/form/Form_Add_Job.java</file>
         </group>
     </open-files>
 </project-private>
